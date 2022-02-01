@@ -10,7 +10,7 @@ type SignupPhoneExistRequest struct {
 }
 
 // 验证登陆手机号格式
-func ValidateSignupPhoneExist(data interface{}, c *gin.Context) map[string][]string {
+func SignupPhoneExist(data interface{}, c *gin.Context) map[string][]string {
 	// 自定义验证规则
 	rules := govalidator.MapData{
 		"phone": []string{"required", "digits:11"},
@@ -24,15 +24,7 @@ func ValidateSignupPhoneExist(data interface{}, c *gin.Context) map[string][]str
 		},
 	}
 
-	// 配置初始化
-	opts := govalidator.Options{
-		Data:          data,
-		Rules:         rules,
-		TagIdentifier: "valid",
-		Messages:      messages,
-	}
-
-	return govalidator.New(opts).ValidateStruct()
+	return validate(data, rules, messages)
 }
 
 type SignupEmailExistRequest struct {
@@ -40,7 +32,7 @@ type SignupEmailExistRequest struct {
 }
 
 // 验证登陆 email
-func ValidateSignupEmailExist(data interface{}, c *gin.Context) map[string][]string {
+func SignupEmailExist(data interface{}, c *gin.Context) map[string][]string {
 	// 自定义验证规则
 	rules := govalidator.MapData{
 		"email": []string{"required", "min:4", "max:30", "email"},
@@ -56,12 +48,5 @@ func ValidateSignupEmailExist(data interface{}, c *gin.Context) map[string][]str
 		},
 	}
 
-	opts := govalidator.Options{
-		Data:          data,
-		Rules:         rules,
-		TagIdentifier: "valid",
-		Messages:      messages,
-	}
-
-	return govalidator.New(opts).ValidateStruct()
+	return validate(data, rules, messages)
 }
