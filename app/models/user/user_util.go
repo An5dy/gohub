@@ -28,6 +28,6 @@ func GetByMulti(loginID string) (userModel User) {
 		Where("phone = ?", loginID).
 		Or("email = ?", loginID).
 		Or("name = ?", loginID).
-		First(&loginID)
+		First(&userModel)
 	return
 }
