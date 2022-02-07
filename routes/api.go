@@ -9,7 +9,7 @@ import (
 func RegisterAPIRoutes(r *gin.Engine) {
 	v1 := r.Group("v1")
 	{
-		// 注册路由
+		// 注册认证路由
 		authGroup := v1.Group("/auth")
 		{
 			suc := new(auth.SignupController)
@@ -29,6 +29,10 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			authGroup.POST("/verify-codes/phone", vcc.SendUsingPhone)
 			// 发送邮件验证码
 			authGroup.POST("/verify-codes/email", vcc.SendUsingEmail)
+			// 登录
+			lc := new(auth.LoginController)
+			// 使用手机号，短信验证码进行登录
+			authGroup.POST("/login/using-phone", lc.LoginByPhone)
 		}
 	}
 }
