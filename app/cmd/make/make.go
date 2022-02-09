@@ -67,6 +67,7 @@ func init() {
 		CmdMakeCMD,
 		CmdMakeModel,
 		CmdMakeAPIController,
+		CmdMakeRequest,
 	)
 }
 
