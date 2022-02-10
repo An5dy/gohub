@@ -49,7 +49,7 @@ func main() {
 		cmd.CmdKey,
 		cmd.CmdPlay,
 		make.CmdMake,
-		make.CmdMigrate,
+		cmd.CmdMigrate,
 	)
 
 	// 配置默认运行 Web 服务
