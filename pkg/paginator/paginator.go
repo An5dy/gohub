@@ -45,7 +45,7 @@ type Paginator struct {
 // 用法:
 //         query := database.DB.Model(Topic{}).Where("category_id = ?", cid)
 //      var topics []Topic
-//         paging := paginator.Paginate(
+//         page := paginator.Paginate(
 //             c,
 //             query,
 //             &topics,
@@ -88,8 +88,8 @@ func (p *Paginator) initProperties(perPage int, baseURL string) {
 	p.PerPage = p.getPerPage(perPage)
 
 	// 排序参数（控制器中以验证过这些参数，可放心使用）
-	p.Order = p.ctx.DefaultQuery(config.Get("paging.url_query_order"), "asc")
-	p.Sort = p.ctx.DefaultQuery(config.Get("paging.url_query_sort"), "id")
+	p.Order = p.ctx.DefaultQuery(config.Get("page.url_query_order"), "asc")
+	p.Sort = p.ctx.DefaultQuery(config.Get("page.url_query_sort"), "id")
 
 	p.TotalCount = p.getTotalCount()
 	p.TotalPage = p.getTotalPage()
@@ -99,21 +99,21 @@ func (p *Paginator) initProperties(perPage int, baseURL string) {
 
 // getPerPage 获取
 func (p *Paginator) getPerPage(perPage int) int {
-	queryPerPage := p.ctx.Query(config.Get("paging.url_query_per_page"))
+	queryPerPage := p.ctx.Query(config.Get("page.url_query_per_page"))
 	if len(queryPerPage) > 0 {
 		perPage = cast.ToInt(queryPerPage)
 	}
 
 	// 没有传参，使用默认
 	if perPage <= 0 {
-		perPage = config.GetInt("paging.perpage")
+		perPage = config.GetInt("page.perpage")
 	}
 	return perPage
 }
 
 // getCurrentPage 返回当前页码
 func (p *Paginator) getCurrentPage() int {
-	page := cast.ToInt(p.ctx.Query(config.Get("paging.url_query_page")))
+	page := cast.ToInt(p.ctx.Query(config.Get("page.url_query_page")))
 	if page <= 0 {
 		page = 1
 	}
@@ -158,7 +158,7 @@ func (p *Paginator) formatBaseURL(baseURL string) string {
 		baseURL += "?"
 	}
 
-	return baseURL + config.Get("paging.url_query_page") + "="
+	return baseURL + config.Get("page.url_query_page") + "="
 }
 
 // getPageLink 拼接分页链接
@@ -166,11 +166,11 @@ func (p *Paginator) getPageLink(page int) string {
 	return fmt.Sprintf("%v%v&%s=%s&%s=%s&%s=%v",
 		p.BaseURL,
 		page,
-		config.Get("paging.url_query_sort"),
+		config.Get("page.url_query_sort"),
 		p.Sort,
-		config.Get("paging.url_query_order"),
+		config.Get("page.url_query_order"),
 		p.Order,
-		config.Get("paging.url_query_per_page"),
+		config.Get("page.url_query_per_page"),
 		p.PerPage,
 	)
 }

@@ -83,3 +83,10 @@ func deleteMysqlDatabase() error {
 	}
 	return nil
 }
+
+// TableName 数据库表名
+func TableName(obj interface{}) string {
+	stmt := &gorm.Statement{DB: DB}
+	stmt.Parse(obj)
+	return stmt.Schema.Table
+}
