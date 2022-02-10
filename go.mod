@@ -5,6 +5,7 @@ go 1.17
 require github.com/gin-gonic/gin v1.7.7
 
 require (
+	github.com/bxcodec/faker/v3 v3.7.0
 	github.com/gertd/go-pluralize v0.2.0
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/golang-jwt/jwt v3.2.2+incompatible
