@@ -67,6 +67,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			ccGroup.GET("", middlewares.AuthJWT(), cc.Index)
 			ccGroup.POST("", middlewares.AuthJWT(), cc.Store)
 			ccGroup.PUT("/:id", middlewares.AuthJWT(), cc.Update)
+			ccGroup.DELETE("/:id", middlewares.AuthJWT(), cc.Delete)
 		}
 	}
 }
