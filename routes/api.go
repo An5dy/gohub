@@ -79,5 +79,11 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			tcGroup.GET("", middlewares.AuthJWT(), tc.Index)
 			tcGroup.GET("/:id", middlewares.AuthJWT(), tc.Show)
 		}
+		// 友情链接
+		lc := new(controllers.LinksController)
+		lcGroup := v1.Group("/links")
+		{
+			lcGroup.GET("", lc.Index)
+		}
 	}
 }
