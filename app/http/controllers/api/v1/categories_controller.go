@@ -45,37 +45,29 @@ func (ctrl *CategoriesController) Store(c *gin.Context) {
 	}
 }
 
-// func (ctrl *CategoriesController) Update(c *gin.Context) {
+func (ctrl *CategoriesController) Update(c *gin.Context) {
 
-// 	categoryModel := category.Get(c.Param("id"))
-// 	if categoryModel.ID == 0 {
-// 		response.Abort404(c)
-// 		return
-// 	}
+	categoryModel := category.Get(c.Param("id"))
+	if categoryModel.ID == 0 {
+		response.Abort404(c)
+		return
+	}
 
-// 	if ok := policies.CanModifyCategory(c, categoryModel); !ok {
-// 		response.Abort403(c)
-// 		return
-// 	}
+	request := requests.CategoryRequest{}
+	if ok := requests.Validate(c, &request, requests.CategorySave); !ok {
+		return
+	}
 
-// 	request := requests.CategoryRequest{}
-// 	bindOk, errs := requests.Validate(c, &request, requests.CategorySave)
-// 	if !bindOk {
-// 		return
-// 	}
-// 	if len(errs) > 0 {
-// 		response.ValidationError(c, 20101, errs)
-// 		return
-// 	}
+	categoryModel.Name = request.Name
+	categoryModel.Description = request.Description
+	rowsAffected := categoryModel.Save()
 
-// 	categoryModel.FieldName = request.FieldName
-// 	rowsAffected := categoryModel.Save()
-// 	if rowsAffected > 0 {
-// 		response.Data(c, categoryModel)
-// 	} else {
-// 		response.Abort500(c, "更新失败，请稍后尝试~")
-// 	}
-// }
+	if rowsAffected > 0 {
+		response.Data(c, categoryModel)
+	} else {
+		response.Abort500(c, "更新失败, 请稍后尝试~")
+	}
+}
 
 // func (ctrl *CategoriesController) Delete(c *gin.Context) {
 

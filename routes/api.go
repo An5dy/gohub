@@ -65,6 +65,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		ccGroup := v1.Group("/categories")
 		{
 			ccGroup.POST("", middlewares.AuthJWT(), cc.Store)
+			ccGroup.PUT("/:id", middlewares.AuthJWT(), cc.Update)
 		}
 	}
 }
