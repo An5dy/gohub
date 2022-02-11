@@ -29,7 +29,7 @@ func IsExist(field, value string) bool {
   return count > 0
 }
 
-func Paginate(c *gin.Context, perPage int) ({{VariableNamePlural}} []{{StructName}}, paging paginator.Paging) {
+func Paginate(c *gin.Context, perPage int) ({{VariableNamePlural}} []{{StructName}}, paging paginator.Page) {
   paging = paginator.Paginate(
     c,
     database.DB.Model({{StructName}}{}),
