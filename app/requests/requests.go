@@ -15,7 +15,7 @@ func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
 	// 1. 解析请求，支持 JSON 数据、表单请求和 URL Query
 	if err := c.ShouldBind(obj); err != nil {
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"message": "请求解析错误，请确认请求格式是否正确。上传文件请使用 multipart 标头，参数请使用 JSON 格式。",
+			"message": "请求解析错误, 请确认请求格式是否正确。上传文件请使用 multipart 标头, 参数请使用 JSON 格式。",
 			"error":   err.Error(),
 		})
 		fmt.Println(err.Error())
@@ -34,7 +34,7 @@ func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
 	return true
 }
 
-func validate(data interface{}, rules govalidator.MapData, messages govalidator.MapData) map[string][]string {
+func validate(data interface{}, rules, messages govalidator.MapData) map[string][]string {
 	// 配置选项
 	opts := govalidator.Options{
 		Data:          data,
@@ -44,4 +44,16 @@ func validate(data interface{}, rules govalidator.MapData, messages govalidator.
 	}
 
 	return govalidator.New(opts).ValidateStruct()
+}
+
+func validateFile(c *gin.Context, data interface{}, rules, messages govalidator.MapData) map[string][]string {
+	opts := govalidator.Options{
+		Request:       c.Request,
+		Rules:         rules,
+		Messages:      rules,
+		TagIdentifier: "valid",
+	}
+
+	// 调用 govalidator 的 Validate 方法来验证文件
+	return govalidator.New(opts).Validate()
 }
